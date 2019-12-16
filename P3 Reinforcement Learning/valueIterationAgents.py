@@ -10,7 +10,7 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
+import sys
 
 import mdp, util
 
@@ -45,7 +45,16 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
-
+        default = None
+        possibleStates = mdp.getStates()
+        for iteration in range(iterations):
+            updatedCounter = util.Counter()   # keep track of counter per iteration
+            for state in possibleStates:
+                action = self.getAction(state)
+                if action is default:         # only update counter for valid actions
+                    continue
+                updatedCounter[state] = self.getQValue(state, action)
+            self.values = updatedCounter      # replace the agent's original values
 
     def getValue(self, state):
         """
@@ -53,16 +62,19 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
         return self.values[state]
 
-
-    def computeQValueFromValues(self, state, action):
+    def computeQValueFromValues(self, state, action): # EXERCISE 9
         """
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        QValue = 0                                                                   # set the intial Q-Value to 0
+        for (nextS, probS) in self.mdp.getTransitionStatesAndProbs(state, action):
+            reward = self.mdp.getReward(state, action, nextS)
+            QValue += probS * (reward + self.discount * self.values[nextS])            # update Q-Value
+        return QValue
 
-    def computeActionFromValues(self, state):
+    def computeActionFromValues(self, state): # EXERCISE 9
         """
           The policy is the best action in the given state
           according to the values currently stored in self.values.
@@ -72,7 +84,16 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if not self.mdp.isTerminal(state):
+            bestQValue = -sys.maxint           # set the initial optimal Q-Value to the lowest int value
+            finalAction = None
+            for action in self.mdp.getPossibleActions(state):
+                current = self.getQValue(state, action)
+                if current > bestQValue:       # if a higher Q-Value is found, update the action and current Q-Value
+                    finalAction = action
+                    bestQValue = current
+            return finalAction
+        return None                        # if a state is terminal, no further action is available
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)

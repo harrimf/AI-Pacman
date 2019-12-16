@@ -35,7 +35,7 @@ class MarkovDecisionProcess:
         """
         abstract
 
-    def getTransitionStatesAndProbs(self, state, action):
+    def getTransitionStatesAndProbs(self, state, action): # EXERCISE 7B
         """
         Returns list of (nextState, prob) pairs
         representing the states reachable
@@ -48,7 +48,7 @@ class MarkovDecisionProcess:
         """
         abstract
 
-    def getReward(self, state, action, nextState):
+    def getReward(self, state, action, nextState): # EXERCISE 7B
         """
         Get the reward for the state, action, nextState transition.
 
