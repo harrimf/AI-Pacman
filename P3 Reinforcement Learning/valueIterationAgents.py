@@ -51,7 +51,7 @@ class ValueIterationAgent(ValueEstimationAgent):
             updatedCounter = util.Counter()   # keep track of counter per iteration
             for state in possibleStates:
                 action = self.getAction(state)
-                if action is default:         # only update counter for valid actions
+                if action is default:         # only update counter for valid optimal actions
                     continue
                 updatedCounter[state] = self.getQValue(state, action)
             self.values = updatedCounter      # replace the agent's original values
