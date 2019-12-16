@@ -87,7 +87,7 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    stack = util.Stack()
+    stack = util.Stack()  #in DFS, a stack is used as fringe
     visited = []
     stack.push((problem.getStartState(), []))
 
@@ -96,7 +96,7 @@ def depthFirstSearch(problem):
         if problem.isGoalState(state):
             return finalPath
         if state not in visited:
-            visited.append(state)
+            visited.append(state)  # only add a vertex when it is not discovered yet
             for (coords, path, cost) in problem.getSuccessors(state):
                 newPath = finalPath + [path]
                 stack.push((coords, newPath))
@@ -105,7 +105,7 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    queue = util.Queue()
+    queue = util.Queue()  # in BFS, a queue is used as fringe
     visited = []
     queue.push((problem.getStartState(), []))
 
@@ -114,7 +114,7 @@ def breadthFirstSearch(problem):
         if problem.isGoalState(state):
             return finalPath
         if state not in visited:
-            visited.append(state)
+            visited.append(state)  # only add a vertex when it is not discovered yet
             for (coords, path, cost) in problem.getSuccessors(state):
                 newPath = finalPath + [path]
                 queue.push((coords, newPath))
@@ -123,7 +123,7 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    queue = util.PriorityQueue()
+    queue = util.PriorityQueue()  # in UCS, a priority queue is used as fringe
     visited = []
     queue.push((problem.getStartState(), [], 0), 0)
 
@@ -132,10 +132,10 @@ def uniformCostSearch(problem):
         if problem.isGoalState(state):
             return finalPath
         if state not in visited:
-            visited.append(state)
+            visited.append(state)  # only add a vertex when it is not discovered yet
             for (coords, path, cost) in problem.getSuccessors(state):
                 newPath = finalPath + [path]
-                newCost = finalCost + cost
+                newCost = finalCost + cost  # calculate the current global cost
                 queue.push((coords, newPath, newCost), newCost)
 
 def nullHeuristic(state, problem=None):
@@ -157,10 +157,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         if problem.isGoalState(state):
             return finalPath
         if state not in visited:
-            visited.append(state)
+            visited.append(state)  # only add a vertex when it is not discovered yet
             for (coords, path, cost) in problem.getSuccessors(state):
                 newPath = finalPath + [path]
-                newCost = finalCost + cost + heuristic(coords, problem)
+                newCost = finalCost + cost + heuristic(coords, problem) # calculate the current global cost + distance to goal vertex
                 queue.push((coords, newPath, newCost), newCost)
 
 # Abbreviations

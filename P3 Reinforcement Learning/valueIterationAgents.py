@@ -71,7 +71,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         QValue = 0                                                                   # set the intial Q-Value to 0
         for (nextS, probS) in self.mdp.getTransitionStatesAndProbs(state, action):
             reward = self.mdp.getReward(state, action, nextS)
-            QValue += probS * (reward + self.discount * self.values[nextS])            # update Q-Value
+            QValue += probS * (reward + self.discount * self.values[nextS])          # update Q-Value
         return QValue
 
     def computeActionFromValues(self, state): # EXERCISE 9
@@ -85,15 +85,15 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
         "*** YOUR CODE HERE ***"
         if not self.mdp.isTerminal(state):
-            bestQValue = -sys.maxint           # set the initial optimal Q-Value to the lowest int value
+            bestQValue = -sys.maxint           # set the initial optimal Q-value to the lowest int value
             finalAction = None
             for action in self.mdp.getPossibleActions(state):
                 current = self.getQValue(state, action)
-                if current > bestQValue:       # if a higher Q-Value is found, update the action and current Q-Value
+                if current > bestQValue:       # if a higher Q-value is found, update the current Q-Value AND the action
                     finalAction = action
                     bestQValue = current
             return finalAction
-        return None                        # if a state is terminal, no further action is available
+        return None                            # if a state is terminal, no further action is available
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
